@@ -1,0 +1,77 @@
+﻿@page "/"
+
+
+<div class="container">
+
+    <EditForm Model="@NewUser" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-md-8"> 
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="firstName">Nome</label>
+                        <input type="text" class="form-control" id="name" @bind-value="@NewUser.Name" placeholder="Digite o nome" />
+                        <ValidationMessage For="@(()=>NewUser.Name)" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" @bind-value="@NewUser.Email" placeholder="Digite o email" />
+                        <ValidationMessage For="@(()=>NewUser.Email)" />
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="lastName">Data de nascimento</label>
+                        <input type="text" class="form-control" id="department" @bind-value="@NewUser.DateOfBirth" placeholder="Digite a data de nascimento" />
+                        <ValidationMessage For="@(()=>NewUser.DateOfBirth)" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-info" Style="margin-top:10px">Adicionar usuário</button>
+            </div>
+
+            @if (displayValidationErrorMessages)
+            {
+                <div class="col-md-4" style="margin-top:10px">
+                    <label>Validation Messages: </label>
+                    <ValidationSummary />
+                </div>
+            }
+        </div>
+    </EditForm>
+
+    @if (displayUserAddedToDB)
+    {
+        <div class="row bg-success text-white" style="margin-top:10px; height:40px">
+            <label class="p-2">Usuário adicionado ao banco de dados... </label>
+        </div>
+    }
+</div>
+
+
+
+@code {
+
+    User NewUser = new();
+
+    bool displayValidationErrorMessages = false;
+    bool displayUserAddedToDB = false;
+
+
+    private void HandleValidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = false;
+        displayUserAddedToDB = true;
+        Console.WriteLine(NewUser.GetUser());
+    }
+
+    private void HandleInvalidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+    } 
+}
